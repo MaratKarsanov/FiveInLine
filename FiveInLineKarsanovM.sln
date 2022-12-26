@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.32802.440
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FiveInLineKarsanovM", "FiveInLineKarsanovM\FiveInLineKarsanovM.csproj", "{E556CB48-819E-4AC0-AAEC-A05441FC0A6A}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{E556CB48-819E-4AC0-AAEC-A05441FC0A6A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E556CB48-819E-4AC0-AAEC-A05441FC0A6A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E556CB48-819E-4AC0-AAEC-A05441FC0A6A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E556CB48-819E-4AC0-AAEC-A05441FC0A6A}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {C8990F95-A3A1-4C72-B1BD-68F608AED075}
+	EndGlobalSection
+EndGlobal
