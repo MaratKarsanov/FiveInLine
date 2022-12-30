@@ -38,12 +38,13 @@ namespace FiveInLineKarsanovM
             Field.ColumnHeadersVisible = false;
             Field.RowHeadersVisible = false;
             Field.Rows.Add(SIZE);
+            //Field.CurrentCell.Style.ForeColor = Color.White;
             AddNewBalls(STARTBALLSCOUNT);
             ShowField();
             //Game();
         }
 
-        bool isGameOver()
+        bool IsGameOver()
         {
             var freeCellsCount = 0;
             for (var i = 0; i < field.GetLength(0); i++)
@@ -112,26 +113,44 @@ namespace FiveInLineKarsanovM
 
         }
 
-        bool isCorrectMove()
+        bool IsCorrectMove(int rowStart, int columnStart, int rowEnd, int columnEnd)
         {
             var wayMatrix = new int[SIZE, SIZE];
             for (var i = 0; i < SIZE; i++)
                 for (var j = 0; j < SIZE; j++)
                     if (field[i, j] != 0)
                         wayMatrix[i, j] = -1;
-            for (var i = 0; i < SIZE; i++)
+            var counter = 1;
+            wayMatrix[rowStart, columnStart] = counter;
+            var hasCounter = true;
+            while (hasCounter)
             {
-                for (var j = 0; j < SIZE; j++)
+                hasCounter = false;
+                for (var i = 0; i < SIZE; i++)
                 {
-
+                    for (var j = 0; j < SIZE; j++)
+                    {
+                        if (wayMatrix[i, j] == counter)
+                        {
+                            if (i > 0 && wayMatrix[i - 1, j] == 0) wayMatrix[i - 1, j] = counter + 1;
+                            if (i < SIZE - 1 && wayMatrix[i + 1, j] == 0) wayMatrix[i + 1, j] = counter + 1;
+                            if (j > 0 && wayMatrix[i, j - 1] == 0) wayMatrix[i, j - 1] = counter + 1;
+                            if (j < SIZE - 1 && wayMatrix[i, j + 1] == 0) wayMatrix[i, j + 1] = counter + 1;
+                            hasCounter = true;
+                        }
+                    }
                 }
+                counter++;
             }
+            if (wayMatrix[rowEnd, columnEnd] == 0)
+                return false;
             return true;
         }
 
         private void Field_CellMouseClick(object sender, DataGridViewCellMouseEventArgs e)
         {
-            if (field[e.RowIndex, e.ColumnIndex] != 0 && transferedBall == 0)
+            //var transferedBall = 0;
+            if (field[e.RowIndex, e.ColumnIndex] != 0)// && transferedBall == 0)
             {
                 transferedBall = field[e.RowIndex, e.ColumnIndex];
                 oldCellX = e.ColumnIndex;
@@ -139,21 +158,30 @@ namespace FiveInLineKarsanovM
             }
             else if (field[e.RowIndex, e.ColumnIndex] == 0 && transferedBall != 0)
             {
-                field[e.RowIndex, e.ColumnIndex] = transferedBall;
-                field[oldCellY, oldCellX] = 0;
+                if (IsCorrectMove(oldCellY, oldCellX, e.RowIndex, e.ColumnIndex))
+                {
+                    field[e.RowIndex, e.ColumnIndex] = transferedBall;
+                    field[oldCellY, oldCellX] = 0;
+                    //oldCellY = oldCellX = -1;
+                    //transferedBall = 0;
+                    AddNewBalls(3);
+                    ShowField();
+                    if (IsGameOver())
+                        MessageBox.Show("Твой счет:");
+                }
+                else
+                {
+                    MessageBox.Show("К полю нет пути");
+                }
                 oldCellY = oldCellX = -1;
                 transferedBall = 0;
-                AddNewBalls(3);
-                ShowField();
-                if (isGameOver())
-                    MessageBox.Show("Твой счет:");
             }
-            else if (field[e.RowIndex, e.ColumnIndex] != 0 && transferedBall != 0)
-            {
-                MessageBox.Show("Поле уже занято!");
-                oldCellY = oldCellX = -1;
-                transferedBall = 0;
-            }
+            //else if (field[e.RowIndex, e.ColumnIndex] != 0 && transferedBall != 0)
+            //{
+            //    MessageBox.Show("Поле уже занято!");
+            //    oldCellY = oldCellX = -1;
+            //    transferedBall = 0;
+            //}
         }
     }
 }
