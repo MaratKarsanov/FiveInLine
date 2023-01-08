@@ -39,6 +39,9 @@ namespace FiveInLineKarsanovM
             this.Column7 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Column8 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Column9 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.buttonRestart = new System.Windows.Forms.Button();
+            this.labelScoreText = new System.Windows.Forms.Label();
+            this.labelScore = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.Field)).BeginInit();
             this.SuspendLayout();
             // 
@@ -49,6 +52,7 @@ namespace FiveInLineKarsanovM
             this.Field.AllowUserToResizeColumns = false;
             this.Field.AllowUserToResizeRows = false;
             this.Field.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.Field.ColumnHeadersVisible = false;
             this.Field.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.Column1,
             this.Column2,
@@ -63,6 +67,7 @@ namespace FiveInLineKarsanovM
             this.Field.Location = new System.Drawing.Point(3, 2);
             this.Field.Name = "Field";
             this.Field.ReadOnly = true;
+            this.Field.RowHeadersVisible = false;
             this.Field.RowTemplate.Height = 50;
             this.Field.Size = new System.Drawing.Size(454, 454);
             this.Field.TabIndex = 0;
@@ -131,17 +136,53 @@ namespace FiveInLineKarsanovM
             this.Column9.ReadOnly = true;
             this.Column9.Width = 50;
             // 
+            // buttonRestart
+            // 
+            this.buttonRestart.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.buttonRestart.Location = new System.Drawing.Point(3, 463);
+            this.buttonRestart.Name = "buttonRestart";
+            this.buttonRestart.Size = new System.Drawing.Size(178, 29);
+            this.buttonRestart.TabIndex = 1;
+            this.buttonRestart.Text = "Начать сначала";
+            this.buttonRestart.UseVisualStyleBackColor = true;
+            this.buttonRestart.Click += new System.EventHandler(this.buttonRestart_Click);
+            // 
+            // labelScoreText
+            // 
+            this.labelScoreText.AutoSize = true;
+            this.labelScoreText.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.labelScoreText.Location = new System.Drawing.Point(187, 472);
+            this.labelScoreText.Name = "labelScoreText";
+            this.labelScoreText.Size = new System.Drawing.Size(88, 20);
+            this.labelScoreText.TabIndex = 2;
+            this.labelScoreText.Text = "Твой счет:";
+            // 
+            // labelScore
+            // 
+            this.labelScore.AutoSize = true;
+            this.labelScore.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.labelScore.Location = new System.Drawing.Point(281, 468);
+            this.labelScore.Name = "labelScore";
+            this.labelScore.Size = new System.Drawing.Size(0, 24);
+            this.labelScore.TabIndex = 3;
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(484, 461);
+            this.ClientSize = new System.Drawing.Size(484, 516);
+            this.Controls.Add(this.labelScore);
+            this.Controls.Add(this.labelScoreText);
+            this.Controls.Add(this.buttonRestart);
             this.Controls.Add(this.Field);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
+            this.MaximizeBox = false;
             this.Name = "MainForm";
             this.Text = "Игра \"Пять в ряд\"";
             this.Load += new System.EventHandler(this.MainForm_Load);
             ((System.ComponentModel.ISupportInitialize)(this.Field)).EndInit();
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 
@@ -157,6 +198,9 @@ namespace FiveInLineKarsanovM
         private System.Windows.Forms.DataGridViewTextBoxColumn Column7;
         private System.Windows.Forms.DataGridViewTextBoxColumn Column8;
         private System.Windows.Forms.DataGridViewTextBoxColumn Column9;
+        private System.Windows.Forms.Button buttonRestart;
+        private System.Windows.Forms.Label labelScoreText;
+        private System.Windows.Forms.Label labelScore;
     }
 }
 

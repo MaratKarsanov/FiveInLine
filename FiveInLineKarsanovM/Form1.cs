@@ -12,6 +12,7 @@ namespace FiveInLineKarsanovM
 {
     public partial class MainForm : Form
     {
+        Image imgFreeCell, imgRedBall, imgGreenBall, imgYellowBall, imgPinkBall, imgBlueBall, imgLightBlueBall, imgBrownBall;
         const int SIZE = 9;
         int[,] field = new int[SIZE, SIZE];
         const int STARTBALLSCOUNT = 7;
@@ -19,6 +20,8 @@ namespace FiveInLineKarsanovM
         int transferedBall = 0;
         int oldCellX = -1;
         int oldCellY = -1;
+        int score = 0;
+
         enum BallType : int
         {
             None = 0,
@@ -27,7 +30,7 @@ namespace FiveInLineKarsanovM
             Green = 3,
             Yellow = 4,
             Brown = 5,
-            Purple = 6,
+            LightBlue = 6,
             Pink = 7
         }
         //BallType[,] field = new BallType[SIZE, SIZE];
@@ -35,13 +38,19 @@ namespace FiveInLineKarsanovM
         public MainForm()
         {
             InitializeComponent();
-            Field.ColumnHeadersVisible = false;
-            Field.RowHeadersVisible = false;
+            imgFreeCell = Bitmap.FromFile(@"C:\Users\79187\source\repos\FiveInLineKarsanovM\FiveInLineKarsanovM\images\FreeCell.png");
+
             Field.Rows.Add(SIZE);
             //Field.CurrentCell.Style.ForeColor = Color.White;
+            score = 0;
+            labelScore.Text = score.ToString();
             AddNewBalls(STARTBALLSCOUNT);
             ShowField();
-            //Game();
+        }
+
+        private void buttonRestart_Click(object sender, EventArgs e)
+        {
+            RestartGame();
         }
 
         bool IsGameOver()
@@ -58,6 +67,58 @@ namespace FiveInLineKarsanovM
             if (freeCellsCount < 3)
                 return true;
             return false;
+        }
+
+        bool DeleteLines()
+        {
+            var wasDeleted = false;
+            for (var i = 0; i < SIZE; i++)
+            {
+                for (var j = 0; j < SIZE; j++)
+                {
+                    if (field[i, j] != 0)
+                    {
+                        int k;
+                        if (SIZE - j >= 5)
+                        {
+                            k = j;
+                            while (k < SIZE && field[i, k] == field[i, j])
+                            {
+                                k++;
+                            }
+                            if (k - j >= 5)
+                            {
+                                wasDeleted = true;
+                                for (var z = j; z < k; z++)
+                                {
+                                    field[i, z] = 0;
+                                }
+                                score += k - j;
+                                labelScore.Text = score.ToString();
+                            }
+                        }
+                        if (SIZE - i >= 5)
+                        {
+                            k = i;
+                            while (k < SIZE && field[k, j] == field[i, j])
+                            {
+                                k++;
+                            }
+                            if (k - i >= 5)
+                            {
+                                wasDeleted = true;
+                                for (var z = i; z < k; z++)
+                                {
+                                    field[z, j] = 0;
+                                }
+                                score += k - i;
+                                labelScore.Text = score.ToString();
+                            }
+                        }
+                    }
+                }
+            }
+            return wasDeleted;
         }
 
         void ShowField()
@@ -81,6 +142,8 @@ namespace FiveInLineKarsanovM
                         if (field[i, j] == 7) Field[j, i].Style.BackColor = Color.Pink;
                     else
                         if (field[i, j] == 0) Field[j, i].Style.BackColor = Color.White;
+                    //else
+                        //if (field[i, j] == -1) Field[j, i].Style.Font
                 }
             }
         }
@@ -110,7 +173,8 @@ namespace FiveInLineKarsanovM
 
         private void MainForm_Load(object sender, EventArgs e)
         {
-
+            //Field.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.DisplayedCells;
+            //Field.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.DisplayedCells;
         }
 
         bool IsCorrectMove(int rowStart, int columnStart, int rowEnd, int columnEnd)
@@ -147,9 +211,20 @@ namespace FiveInLineKarsanovM
             return true;
         }
 
+        void RestartGame()
+        {
+            for (var i = 0; i < SIZE; i++)
+                for (var j = 0; j < SIZE; j++)
+                    field[i, j] = 0;
+            score = 0;
+            labelScore.Text = score.ToString();
+            AddNewBalls(STARTBALLSCOUNT);
+            ShowField();
+        }
+
         private void Field_CellMouseClick(object sender, DataGridViewCellMouseEventArgs e)
         {
-            //var transferedBall = 0;
+            var wasDeleted = false;
             if (field[e.RowIndex, e.ColumnIndex] != 0)// && transferedBall == 0)
             {
                 transferedBall = field[e.RowIndex, e.ColumnIndex];
@@ -164,10 +239,17 @@ namespace FiveInLineKarsanovM
                     field[oldCellY, oldCellX] = 0;
                     //oldCellY = oldCellX = -1;
                     //transferedBall = 0;
-                    AddNewBalls(3);
+                    wasDeleted = DeleteLines();
+                    if (!wasDeleted)
+                    {
+                        AddNewBalls(3);
+                    }
                     ShowField();
                     if (IsGameOver())
-                        MessageBox.Show("Твой счет:");
+                    {
+                        MessageBox.Show("Твой счет: " + score.ToString());
+                        RestartGame();
+                    }
                 }
                 else
                 {
@@ -176,12 +258,6 @@ namespace FiveInLineKarsanovM
                 oldCellY = oldCellX = -1;
                 transferedBall = 0;
             }
-            //else if (field[e.RowIndex, e.ColumnIndex] != 0 && transferedBall != 0)
-            //{
-            //    MessageBox.Show("Поле уже занято!");
-            //    oldCellY = oldCellX = -1;
-            //    transferedBall = 0;
-            //}
         }
     }
 }
