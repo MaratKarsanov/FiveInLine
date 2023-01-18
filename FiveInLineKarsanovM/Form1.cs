@@ -15,24 +15,35 @@ namespace FiveInLineKarsanovM
         Image imgFreeCell, imgRedBall, imgGreenBall, imgYellowBall, imgPinkBall, imgBlueBall, imgLightBlueBall, imgBrownBall;
         const int SIZE = 9;
         int[,] field = new int[SIZE, SIZE];
-        const int STARTBALLSCOUNT = 7;
+        const int STARTBALLSCOUNT = 6;
         const int ADDEDBALLSAFTERMOVECOUNT = 3;
         int transferedBall = 0;
         int oldCellX = -1;
         int oldCellY = -1;
         int score = 0;
-
-        enum BallType : int
+        List<Color> ballColors = new List<Color>
         {
-            None = 0,
-            Red = 1,
-            Blue = 2,
-            Green = 3,
-            Yellow = 4,
-            Brown = 5,
-            LightBlue = 6,
-            Pink = 7
-        }
+            Color.White,
+            Color.Red,
+            Color.Blue,
+            Color.Green,
+            Color.Yellow,
+            Color.Brown,
+            Color.Purple,
+            Color.Pink
+        };
+
+        //enum BallType : int
+        //{
+        //    None = 0,
+        //    Red = 1,
+        //    Blue = 2,
+        //    Green = 3,
+        //    Yellow = 4,
+        //    Brown = 5,
+        //    LightBlue = 6,
+        //    Pink = 7
+        //}
         //BallType[,] field = new BallType[SIZE, SIZE];
 
         public MainForm()
@@ -127,23 +138,7 @@ namespace FiveInLineKarsanovM
             {
                 for (var j = 0; j < SIZE; j++)
                 {
-                    if (field[i, j] == 1) Field[j, i].Style.BackColor = Color.Red;
-                    else
-                        if (field[i, j] == 2) Field[j, i].Style.BackColor = Color.Blue;
-                    else
-                        if (field[i, j] == 3) Field[j, i].Style.BackColor = Color.Green;
-                    else
-                        if (field[i, j] == 4) Field[j, i].Style.BackColor = Color.Yellow;
-                    else
-                        if (field[i, j] == 5) Field[j, i].Style.BackColor = Color.Brown;
-                    else
-                        if (field[i, j] == 6) Field[j, i].Style.BackColor = Color.Purple;
-                    else
-                        if (field[i, j] == 7) Field[j, i].Style.BackColor = Color.Pink;
-                    else
-                        if (field[i, j] == 0) Field[j, i].Style.BackColor = Color.White;
-                    //else
-                        //if (field[i, j] == -1) Field[j, i].Style.Font
+                    Field[j, i].Style.BackColor = ballColors[field[i, j]];
                 }
             }
         }
@@ -242,7 +237,8 @@ namespace FiveInLineKarsanovM
                     wasDeleted = DeleteLines();
                     if (!wasDeleted)
                     {
-                        AddNewBalls(3);
+                        AddNewBalls(ADDEDBALLSAFTERMOVECOUNT);
+                        DeleteLines();
                     }
                     ShowField();
                     if (IsGameOver())
