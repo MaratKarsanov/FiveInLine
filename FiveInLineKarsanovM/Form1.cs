@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.IO;
 
 namespace FiveInLineKarsanovM
 {
@@ -17,6 +18,7 @@ namespace FiveInLineKarsanovM
         int[,] field = new int[SIZE, SIZE];
         const int STARTBALLSCOUNT = 6;
         const int ADDEDBALLSAFTERMOVECOUNT = 3;
+        const int BALLCOLORSCOUNT = 7;
         int transferedBall = 0;
         int oldCellX = -1;
         int oldCellY = -1;
@@ -49,8 +51,8 @@ namespace FiveInLineKarsanovM
         public MainForm()
         {
             InitializeComponent();
-            imgFreeCell = Bitmap.FromFile(@"C:\Users\79187\source\repos\FiveInLineKarsanovM\FiveInLineKarsanovM\images\FreeCell.png");
-
+            imgFreeCell = Bitmap.FromFile("images/FreeCell.png");
+            //File.WriteAllText("result.txt", "0");
             Field.Rows.Add(SIZE);
             //Field.CurrentCell.Style.ForeColor = Color.White;
             score = 0;
@@ -148,8 +150,8 @@ namespace FiveInLineKarsanovM
             var rnd = new Random();
             var x = rnd.Next(0, SIZE - 1);
             var y = rnd.Next(0, SIZE - 1);
-            var involvedColores = new int[7];
-            var ballColor = rnd.Next(0, involvedColores.Length - 1);
+            var involvedColores = new int[BALLCOLORSCOUNT];
+            var ballColor = rnd.Next(0, BALLCOLORSCOUNT - 1);
             for (var i = 0; i < ballsCount; i++)
             {
                 while (field[x, y] != 0)
@@ -159,7 +161,7 @@ namespace FiveInLineKarsanovM
                 }
                 while (involvedColores[ballColor] != 0)
                 {
-                    ballColor = rnd.Next(0, involvedColores.Length);
+                    ballColor = rnd.Next(0, BALLCOLORSCOUNT);
                 }
                 field[x, y] = ballColor + 1;
                 involvedColores[ballColor] = 1;
@@ -217,6 +219,14 @@ namespace FiveInLineKarsanovM
             ShowField();
         }
 
+        void RewriteRecord(int oldValue, int newValue)
+        {
+            if (oldValue < newValue)
+            {
+                File.WriteAllText("result.txt", newValue.ToString());
+            }
+        }
+
         private void Field_CellMouseClick(object sender, DataGridViewCellMouseEventArgs e)
         {
             var wasDeleted = false;
@@ -243,7 +253,8 @@ namespace FiveInLineKarsanovM
                     ShowField();
                     if (IsGameOver())
                     {
-                        MessageBox.Show("Твой счет: " + score.ToString());
+                        RewriteRecord(Int32.Parse(File.ReadAllText("result.txt")), score);
+                        MessageBox.Show("Твой счет: " + score.ToString() + "\nРекорд: " + File.ReadAllText("result.txt"));
                         RestartGame();
                     }
                 }

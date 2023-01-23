@@ -80,15 +80,5 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup />
-  <ItemGroup>
-    <Content Include="images\BlueBall.png" />
-    <Content Include="images\BrownBall.png" />
-    <Content Include="images\FreeCell.png" />
-    <Content Include="images\GreenBall.png" />
-    <Content Include="images\LightBlueBall.png" />
-    <Content Include="images\PinkBall.png" />
-    <Content Include="images\RedBall.png" />
-    <Content Include="images\YellowBall.png" />
-  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
